@@ -1,0 +1,674 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS Custom Properties for Light/Dark ──
+ * Colors are now injected from content/site/config.json via ThemeStyles component in layout.tsx.
+ * The defaults below serve as fallbacks; override by editing config.json.
+ */
+:root {
+  --font-bengali: "BengaliCustom", "Noto Sans Bengali", sans-serif;
+  --color-surface: #e4e4e4;
+  --color-surface-alt: #dbdbdb;
+  --color-surface-hover: #d0d0d0;
+  --color-border: #c8c8c8;
+  --color-fg: #2c2c2c;
+  --color-fg-muted: #5a5a5a;
+  --color-fg-subtle: #808080;
+  --color-accent: #2c2c2c;
+  --color-accent-hover: #4a4a4a;
+  --color-prose-bg: #e4e4e4;
+  --scrollbar: #b0b0b0;
+  --scrollbar-hover: #909090;
+}
+
+.dark {
+  --color-surface: #2c2c2c;
+  --color-surface-alt: #363636;
+  --color-surface-hover: #404040;
+  --color-border: #484848;
+  --color-fg: #e4e4e4;
+  --color-fg-muted: #a8a8a8;
+  --color-fg-subtle: #808080;
+  --color-accent: #e4e4e4;
+  --color-accent-hover: #c0c0c0;
+  --color-prose-bg: #2c2c2c;
+  --scrollbar: #505050;
+  --scrollbar-hover: #606060;
+}
+
+/* ── Custom Bengali Font ──
+ * Uses Bornomala-Regular.ttf (public/fonts). Update the file to change fonts.
+ */
+@font-face {
+  font-family: "BengaliCustom";
+  src: url("/fonts/Bornomala-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "BengaliCustom";
+  src: url("/fonts/Bornomala-Regular.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    overflow-x: clip;
+  }
+
+  body {
+    @apply bg-surface text-fg antialiased;
+    /* Bangla stays the site default — the bulk of the UI copy is Bengali.
+       Latin-only surfaces (video titles, metadata) opt into `font-latin`
+       for the self-hosted Inter face. */
+    font-size: 14px;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    overflow-x: clip;
+    max-width: 100vw;
+  }
+
+  ::selection {
+    @apply bg-gray-900/10 text-fg;
+  }
+
+  .dark ::selection {
+    @apply bg-gray-100/10 text-fg;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-gray-400 ring-offset-2 ring-offset-surface;
+    border-radius: 4px;
+  }
+
+  /* ── Smooth scrollbar ── */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--scrollbar);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-hover);
+  }
+}
+
+@layer components {
+  /* ── Layout ── */
+  .container-page {
+    @apply mx-auto max-w-wide px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-article {
+    @apply mx-auto max-w-article px-4 sm:px-6;
+  }
+
+  /* ── Card grid for homepage (4 columns on desktop) ── */
+  .card-grid {
+    @apply grid gap-3 sm:gap-4;
+    grid-template-columns: repeat(1, 1fr);
+  }
+  @screen sm {
+    .card-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @screen lg {
+    .card-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @screen xl {
+    .card-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .card-grid .card-hover {
+    @apply h-full;
+  }
+
+  /* ── Cards ── */
+  .card {
+    @apply rounded-2xl border border-border bg-surface transition-all duration-300;
+  }
+
+  .card-hover {
+    @apply card shadow-sm
+      hover:shadow-lg hover:shadow-black/[0.05] dark:hover:shadow-black/[0.35]
+      hover:-translate-y-1;
+  }
+
+  .card-hover:hover .card-image {
+    @apply scale-[1.04];
+  }
+
+  .card-image {
+    @apply transition-transform duration-500 ease-out;
+  }
+
+  /* ── Badges / Chips ── */
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium
+      bg-surface-alt text-fg-muted border border-border
+      transition-all duration-200;
+  }
+
+  .chip:hover {
+    @apply bg-surface-hover text-fg;
+  }
+
+  .chip-category {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium
+      border transition-all duration-200 hover:scale-105;
+  }
+
+  /* Category badge colours — match PlaceholderCover palette */
+  .chip-category[data-category="hot"],
+  .chip-category[data-category="গরম গল্প"] {
+    @apply bg-red-50 text-red-700 border-red-200
+      dark:bg-red-950/30 dark:text-red-300 dark:border-red-800/40;
+  }
+  .chip-category[data-category="bodhu"],
+  .chip-category[data-category="গৃহ বধূ"] {
+    @apply bg-pink-50 text-pink-700 border-pink-200
+      dark:bg-pink-950/30 dark:text-pink-300 dark:border-pink-800/40;
+  }
+  .chip-category[data-category="tarona"],
+  .chip-category[data-category="যৌন তাড়না"] {
+    @apply bg-violet-50 text-violet-700 border-violet-200
+      dark:bg-violet-950/30 dark:text-violet-300 dark:border-violet-800/40;
+  }
+  .chip-category[data-category="porokiya"],
+  .chip-category[data-category="পরকিয়া"] {
+    @apply bg-rose-50 text-rose-700 border-rose-200
+      dark:bg-rose-950/30 dark:text-rose-300 dark:border-rose-800/40;
+  }
+  .chip-category[data-category="kumari"],
+  .chip-category[data-category="কুমারী"] {
+    @apply bg-pink-50 text-pink-600 border-pink-200
+      dark:bg-pink-950/30 dark:text-pink-300 dark:border-pink-800/40;
+  }
+  .chip-category[data-category="prem"],
+  .chip-category[data-category="প্রেম"] {
+    @apply bg-red-50 text-red-700 border-red-200
+      dark:bg-red-950/30 dark:text-red-300 dark:border-red-800/40;
+  }
+  .chip-category[data-category="pesha"],
+  .chip-category[data-category="পেশাজীবী"] {
+    @apply bg-sky-50 text-sky-700 border-sky-200
+      dark:bg-sky-950/30 dark:text-sky-300 dark:border-sky-800/40;
+  }
+  .chip-category[data-category="somokami"],
+  .chip-category[data-category="সমকামী"] {
+    @apply bg-purple-50 text-purple-700 border-purple-200
+      dark:bg-purple-950/30 dark:text-purple-300 dark:border-purple-800/40;
+  }
+  .chip-category[data-category="aloukik"],
+  .chip-category[data-category="অলৌকিক"] {
+    @apply bg-indigo-50 text-indigo-700 border-indigo-200
+      dark:bg-indigo-950/30 dark:text-indigo-300 dark:border-indigo-800/40;
+  }
+
+  /* ── Buttons ── */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl text-sm font-medium
+      transition-all duration-200 focus-visible:outline-none focus-visible:ring-2
+      focus-visible:ring-gray-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface
+      disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn bg-fg text-surface px-5 py-2.5
+      hover:opacity-90 active:scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply btn bg-surface-alt text-fg px-5 py-2.5 border border-border
+      hover:bg-surface-hover active:scale-[0.98];
+  }
+
+  .btn-outline {
+    @apply btn border border-border text-fg px-4 py-2
+      hover:bg-surface-hover active:scale-[0.98];
+  }
+
+  .btn-ghost {
+    @apply btn text-fg-muted px-2 py-2
+      hover:bg-surface-hover hover:text-fg;
+  }
+
+  /* ── Inputs ── */
+  .input-field {
+    @apply w-full px-4 py-2.5 rounded-xl border border-border bg-surface-alt text-fg focus:ring-2 focus:ring-accent outline-none transition-all;
+  }
+
+  /* ── Links ── */
+  .link {
+    @apply text-fg underline decoration-border underline-offset-2
+      hover:decoration-fg transition-all duration-200;
+  }
+
+  /* ── Prose (article typography) ── */
+  .prose-custom {
+    @apply prose max-w-none font-bengali
+      prose-headings:text-fg prose-headings:font-semibold prose-headings:tracking-tight
+      prose-p:text-fg prose-p:mb-6 prose-p:text-[16px] sm:prose-p:text-[17px] prose-p:text-left
+      prose-a:text-fg prose-a:underline prose-a:decoration-border prose-a:underline-offset-2;
+  }
+
+  /* Font overrides based on CSS variables */
+  .prose-custom p, .prose-custom span, .prose-custom div, .prose-custom li {
+    font-size: var(--article-fs, inherit) !important;
+    line-height: var(--article-lh, inherit) !important;
+  }
+  
+  .prose-custom {
+    @apply hover:prose-a:decoration-fg
+      prose-blockquote:border-l-[3px] prose-blockquote:border-border
+      prose-blockquote:text-fg-muted prose-blockquote:not-italic prose-blockquote:pl-5
+      prose-blockquote:my-8
+      prose-strong:text-fg prose-strong:font-semibold
+      prose-code:text-[13px] prose-code:text-fg prose-code:bg-surface-alt
+      prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:border prose-code:border-border
+      prose-pre:bg-surface-alt prose-pre:border prose-pre:border-border prose-pre:rounded-2xl
+      prose-pre:shadow-sm prose-pre:text-[13px]
+      prose-img:rounded-2xl prose-img:shadow-md
+      prose-li:text-fg prose-li:leading-[1.9] prose-li:my-1.5
+      prose-th:text-fg prose-th:border-border prose-td:border-border prose-td:text-[13px]
+      prose-hr:border-border
+      prose-h2:text-fg prose-h2:mt-12 prose-h2:mb-5
+      prose-h3:text-fg prose-h3:mt-10 prose-h3:mb-4
+      prose-ul:my-6 prose-ol:my-6
+      prose-figure:my-10
+      prose-figcaption:text-center prose-figcaption:text-sm prose-figcaption:text-fg-subtle;
+  }
+
+  /* ── Reading Progress Bar ── */
+  .reading-progress {
+    @apply fixed top-0 left-0 z-[60] h-[3px] bg-fg transition-all duration-150 ease-out;
+  }
+
+  /* ── Search Modal ── */
+  .search-overlay {
+    @apply fixed inset-0 z-50 flex items-start justify-center
+      bg-black/40 backdrop-blur-md pt-4 sm:pt-[12vh] px-3 pb-6
+      animate-fade-in overflow-y-auto;
+  }
+
+  .search-modal {
+    @apply w-full max-w-[600px] mx-auto rounded-2xl border border-border bg-surface shadow-2xl
+      animate-scale-in overflow-hidden max-h-[85vh] flex flex-col;
+  }
+
+  /* ── Article Layout ── */
+  .article-layout {
+    @apply max-w-wide mx-auto px-4 sm:px-6 lg:px-8;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @screen lg {
+    .article-layout {
+      grid-template-columns: 1fr 280px;
+    }
+  }
+
+  /* ── Sidebar ── */
+  .sidebar-section {
+    @apply mb-10;
+  }
+
+  .sidebar-title {
+    @apply text-[11px] font-semibold uppercase tracking-[0.12em] text-fg-subtle mb-4;
+  }
+
+  /* ── Tag cloud ── */
+  .tag-cloud {
+    @apply inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-medium
+      bg-surface-alt text-fg-muted border border-border
+      hover:bg-surface-hover hover:text-fg
+      transition-all duration-200;
+  }
+
+  /* ── Header nav active indicator ── */
+  .nav-link {
+    @apply relative text-sm text-fg-muted transition-colors duration-200
+      hover:text-fg;
+  }
+
+  .nav-link::after {
+    content: "";
+    @apply absolute -bottom-[18px] left-2 right-2 h-[2px] rounded-full bg-fg scale-x-0
+      transition-transform duration-200;
+  }
+
+  .nav-link.active::after {
+    @apply scale-x-100;
+  }
+}
+
+/* ── Bengali typography refinements ── */
+.prose-custom {
+  font-family: var(--font-bengali) !important;
+}
+.prose-custom p {
+  word-spacing: 0.045em;
+  hanging-punctuation: first allow-end;
+}
+
+/* Blank-line spacers injected by remark-preserve-blank-lines —
+   rendered as extra empty lines between paragraphs */
+.prose-custom .blank-line-spacer {
+  min-height: 1.85em;
+  margin: 0 !important;
+  padding: 0;
+}
+
+/* Ensure non-paragraph elements stay left-aligned */
+.prose-custom h1,
+.prose-custom h2,
+.prose-custom h3,
+.prose-custom h4,
+.prose-custom h5,
+.prose-custom h6 {
+  text-align: left;
+}
+
+/* Lists: preserve natural left alignment */
+.prose-custom ul,
+.prose-custom ol,
+.prose-custom li {
+  text-align: left;
+}
+
+/* Blockquotes: keep left-aligned */
+.prose-custom blockquote {
+  text-align: left;
+}
+
+/* Code blocks: keep left-aligned */
+.prose-custom pre,
+.prose-custom code {
+  text-align: left;
+}
+
+/* Captions: keep centered as originally styled */
+.prose-custom figcaption {
+  text-align: center;
+}
+
+/* ── Heading anchor links for TOC ── */
+.prose-custom h2,
+.prose-custom h3 {
+  scroll-margin-top: 5rem;
+}
+
+/* ── Smooth reveal animation utility ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Inline attribution divider ── */
+.inline-attribution {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--color-fg-subtle);
+  opacity: 0.6;
+  padding: 1.5rem 0;
+  user-select: none;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.inline-attribution .ia-sep {
+  opacity: 0.35;
+  letter-spacing: -0.05em;
+}
+
+.inline-attribution .ia-text {
+  margin: 0 0.5rem;
+  word-break: break-word;
+}
+
+/* ── Featured Carousel ── */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-fg-muted);
+  backdrop-filter: blur(12px);
+  opacity: 0;
+  transition: opacity 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.carousel-btn:hover {
+  color: var(--color-fg);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-btn:active {
+  scale: 0.95;
+}
+
+/* Fade in when parent (.relative) is hovered */
+.relative:hover .carousel-btn {
+  opacity: 1;
+}
+
+/* Featured section premium surface */
+.featured-section {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid var(--color-border);
+  background: linear-gradient(
+    135deg,
+    var(--color-surface) 0%,
+    var(--color-surface-alt) 50%,
+    var(--color-surface) 100%
+  );
+}
+
+.dark .featured-section {
+  background: linear-gradient(
+    135deg,
+    var(--color-surface) 0%,
+    var(--color-surface-hover) 50%,
+    var(--color-surface) 100%
+  );
+}
+
+.featured-section::before {
+  content: "";
+  @apply absolute inset-0 pointer-events-none;
+  background: radial-gradient(
+    ellipse at 20% 50%,
+    var(--color-accent) 0%,
+    transparent 60%
+  );
+  opacity: 0.03;
+}
+
+/* Decorative section divider */
+.section-divider {
+  @apply relative flex items-center justify-center my-10 sm:my-14;
+}
+
+.section-divider::before {
+  content: "";
+  @apply absolute left-0 right-0 h-px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-border) 20%,
+    var(--color-border) 80%,
+    transparent
+  );
+}
+
+.section-divider-icon {
+  @apply relative z-10 flex h-8 w-8 items-center justify-center rounded-full
+    border border-border bg-surface text-fg-subtle;
+}
+
+/* Heading accent underline */
+.heading-accent {
+  @apply relative inline-block;
+}
+
+.heading-accent::after {
+  content: "";
+  @apply absolute -bottom-2 left-0 right-0 h-[2px] rounded-full;
+  background: linear-gradient(to right, var(--color-fg), transparent);
+  opacity: 0.25;
+}
+
+.dark .heading-accent::after {
+  opacity: 0.35;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Sticky Side Ads ──
+   Only reserve gutter space (180px each side) on wide desktops where
+   the 160px ads actually fit. Below 1560px the page uses the full
+   width so content never gets squeezed or overlapped on tablets/laptops.
+   The padding is scoped to pages that actually render the sticky ads
+   (the public site shell) via body:has(), so the admin panel is never
+   squeezed by ad gutters. */
+@media (max-width: 1559px) {
+  body {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .sticky-ad-left,
+  .sticky-ad-right {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1560px) {
+  body:has(.sticky-ad-left) {
+    padding-left: 180px !important;
+    padding-right: 180px !important;
+  }
+
+  .sticky-ad-left {
+    position: fixed;
+    left: 10px;
+    top: 120px;
+    width: 160px;
+    height: 600px;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sticky-ad-right {
+    position: fixed;
+    right: 10px;
+    top: 120px;
+    width: 160px;
+    height: 600px;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Author prompt toast slide-up animation */
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.35s ease-out;
+}
+
+/* ── Safe Mode — light blur all images site-wide except logos & avatars ── */
+/*
+ * Everything visual is lightly blurred so anything inappropriate is
+ * softened in public. Blur intensity is intentionally lighter than a
+ * full blackout — readers can still recognize shapes, colors, and
+ * cover composition — but enough that nothing identifiable is sharp.
+ *
+ * Two kinds of images are exempt:
+ *   • Profile/avatar pictures — small, round, identifying people is
+ *     not the thing Safe Mode exists to hide.
+ *   • Site branding — the header logo, footer logo, and any other
+ *     `.site-brand` element. Branding stays sharp so the site still
+ *     looks recognizable; sensitive art does not sit on this class.
+ *
+ * Both exemptions work either way: add `.safe-blur-exempt` directly on
+ * an <img>, or add `.site-brand` to a wrapper and every <img> inside
+ * it is exempt. Two paths, same outcome, minimal markup churn.
+ */
+.safe-mode img:not(.safe-blur-exempt):not(.site-brand img):not(img.site-brand *) {
+  /* ~6px keeps the image recognizable (shape, palette, typography in
+     thumbnails) but removes any detail that would be inappropriate
+     in a public space. Was 18px before; reduced for readability. */
+  filter: blur(6px) !important;
+  transform: scale(1.03);
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+/* Wrapper- and element-level opt-outs. Kept as separate selectors
+   rather than `:not(...)` chains so it's obvious how to add a new
+   exemption in the future (just add another `.safe-mode .foo img` line). */
+.safe-mode .safe-blur-exempt img,
+.safe-mode img.safe-blur-exempt,
+.safe-mode .site-brand img {
+  filter: none !important;
+  transform: none !important;
+}

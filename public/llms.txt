@@ -1,0 +1,21 @@
+# বাংলা চটি কাহিনী — Bangla Choti Golpo
+> বাংলা চটি ও পানু গল্পের সংগ্রহ — Read, comment, and share Bengali sex and chodachudi stories.
+
+## Core info
+- Site: https://chotikahini.vercel.app/
+- Language: bn-BD (Bengali)
+- Topics: Bengali choti, panu, sex stories, romantic stories, real-life stories
+
+## Browse
+- Homepage: https://chotikahini.vercel.app/
+- Latest stories: https://chotikahini.vercel.app/page/1
+- Tags: https://chotikahini.vercel.app/tags
+- Authors: https://chotikahini.vercel.app/authors
+- Search: https://chotikahini.vercel.app/search
+- Featured: https://chotikahini.vercel.app/featured
+- RSS: https://chotikahini.vercel.app/rss.xml
+- Sitemap: https://chotikahini.vercel.app/sitemap.xml
+
+## API
+- https://chotikahini.vercel.app/api/posts — all published stories
+- https://chotikahini.vercel.app/api/site-config — site configuration

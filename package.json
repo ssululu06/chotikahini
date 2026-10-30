@@ -1,0 +1,51 @@
+{
+  "name": "chotikahini",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A config-driven Bengali literature website built with Next.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@mozilla/readability": "^0.6.0",
+    "@napi-rs/canvas": "^1.0.11",
+    "@supabase/supabase-js": "^2.112.3",
+    "bcryptjs": "^3.0.3",
+    "gray-matter": "^4.0.3",
+    "jose": "^6.2.9",
+    "jsdom": "^29.1.1",
+    "lucide-react": "^0.400.0",
+    "mammoth": "^1.12.1",
+    "next": "^14.2.0",
+    "next-mdx-remote": "^6.0.0",
+    "pdfjs-dist": "^3.11.174",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "reading-time": "^1.5.0",
+    "rehype-highlight": "^7.0.0",
+    "rehype-raw": "^7.0.0",
+    "remark-breaks": "^4.0.0",
+    "remark-gfm": "^4.0.0",
+    "sharp": "^0.35.5",
+    "turndown": "^7.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.13",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsdom": "^30.0.0",
+    "@types/node": "^20.12.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@types/turndown": "^5.0.6",
+    "autoprefixer": "^10.4.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.2.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.4.0",
+    "vfile": "^6.0.0"
+  }
+}
